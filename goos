@@ -17,8 +17,10 @@ class BlockAll(cookiejar.CookiePolicy):
     rfc2965 = hide_cookie2 = False
 
 def main():
-	s = requests.Session()
-	s.cookies.set_policy(BlockAll())
+	#s = requests.Session()
+	#s.cookies.set_policy(BlockAll())
+	#no fix yet for:
+        #urllib.error.HTTPError: HTTP Error 429: Too Many Requests  
 
 	argc = len(sys.argv)
 	query=""
