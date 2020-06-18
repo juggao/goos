@@ -42,9 +42,12 @@ def main():
 	print("lang: ", langs)
 	print("max: ", maxresults)
 	print("tld: ", tld, "\n")
-	for j in search(query, tld, lang=langs, num=maxresults,start=0,stop=maxresults, pause=2): 
-		print(colored(j, 'blue')) 
-		print('________')
+	try:
+		for j in search(query, tld, lang=langs, num=maxresults,start=0,stop=maxresults, pause=2): 
+			print(colored(j, 'blue')) 
+			print('________')
+	except Exception as x:
+		print(x)
 
 if __name__ == "__main__":
 	main()
