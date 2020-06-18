@@ -40,7 +40,7 @@ def main():
 	print("lang: ", langs)
 	print("max: ", maxresults)
 	print("tld: ", tld, "\n")
-	for j in search(query, tld, lang=langs, num=maxresults,start=0,stop=None, pause=2): 
+	for j in search(query, tld, lang=langs, num=maxresults,start=0,stop=maxresults, pause=2): 
 		print(colored(j, 'blue')) 
 		print('________')
 
