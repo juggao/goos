@@ -68,7 +68,7 @@ def main():
 	query=""
 	tld="nl"
 	langs="nl"
-	tpe="nws"
+	tpes=""
 	if argc == 1:
 		print("goos \"Some Name\" <maxresults> <lang> <tld> <tpe=vid, isch, nws, shop, bks, app>")
 		return
