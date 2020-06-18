@@ -7,26 +7,40 @@ import sys
 
 from termcolor import colored
 from googlesearch import search 
+from http import cookiejar  # Python 2: import cookielib as cookiejar
+import requests
 
+
+class BlockAll(cookiejar.CookiePolicy):
+    return_ok = set_ok = domain_return_ok = path_return_ok = lambda self, *args, **kwargs: False
+    netscape = True
+    rfc2965 = hide_cookie2 = False
 
 def main():
+	s = requests.Session()
+	s.cookies.set_policy(BlockAll())
+
 	argc = len(sys.argv)
 	query=""
 	tld="nl"
+	langs="nl"
 	if argc == 1:
-		print("goos \"Some Name\" <maxresults> <tld>")
+		print("goos \"Some Name\" <lang> <maxresults> <tld>")
 		return
 	else:
 		query = sys.argv[1]
 	maxresults=10
 	if argc >= 3:
-	    maxresults = int(sys.argv[2])
+	    langs = sys.argv[2]
 	if argc >= 4:
-	    tld = sys.argv[3]
+	    maxresults = int(sys.argv[3])
+	if argc >= 5:
+	    tld = sys.argv[4]
 	print("searching", query)
+	print("lang: ", langs)
 	print("max: ", maxresults)
 	print("tld: ", tld, "\n")
-	for j in search(query, tld, maxresults,start=0,stop=None, pause=2): 
+	for j in search(query, tld, lang=langs, num=maxresults,start=0,stop=None, pause=2): 
 		print(colored(j, 'blue')) 
 		print('________')
 
