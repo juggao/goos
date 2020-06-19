@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-# goos: query google
+# goos: query google 
 # AO-2020
 #
-# usage example: goos linux 10 nl nl nws
+# usage example: goos "linus linux" 10 nl
 
 import sys
 
@@ -11,6 +11,8 @@ from termcolor import colored
 from googlesearch import search 
 from http import cookiejar  # Python 2: import cookielib as cookiejar
 import requests
+import urllib.request
+from bs4 import BeautifulSoup
 
 
 """
@@ -69,13 +71,14 @@ def main():
 	tld="nl"
 	langs="nl"
 	tpes=""
+	url=0
+	dlimit=""
 	if argc == 1:
-		print("goos \"Some Name\" <maxresults> <lang> <tld> <tpe=vid, isch, nws, shop, bks, app>")
+		print("goos \"Some Name\" <maxresults> <lang> <tld> <flag=udmh>")
 		return
 	else:
 		query = sys.argv[1]
 	maxresults=10
-	tpes=""
 	if argc >= 3:
 	    maxresults = int(sys.argv[2])
 	if argc >= 4:
@@ -83,18 +86,42 @@ def main():
 	if argc >= 5:
 	    tld = sys.argv[4]
 	if argc >= 6:
-	    tpes = sys.argv[5]
+		if 'u' in sys.argv[5]:
+			url = 1		
+		if 'd' in sys.argv[5]:
+			dlimit='qdr:d'
+		if 'm' in sys.argv[5]:
+			dlimit='qdr:m'
+		if 'h' in sys.argv[5]:
+			dlimit='qdr:h'
 
-	print("searching", query) 
+	print("searching:", query) 
 	print("lang:", langs,
+	      "tbs: ", dlimit, 
 	      "max:", maxresults,
 	      "tld:", tld,
-	      "tpe:", tpes, "\n")
+	      "tpe:", tpes, 
+	      "url only:", url, "\n")
  
 	try:
-		for j in search(query, tld, lang=langs, num=10,start=0,stop=maxresults, pause=2, tpe=tpes): 
-			print(colored(j, 'blue')) 
-			print('________')
+		for j in search(query, tld, lang=langs,tbs=dlimit, num=10,start=0,stop=maxresults, pause=2, tpe=tpes): 
+			try:		
+				if url==0:				
+					fp = urllib.request.urlopen(j)
+					mybytes = fp.read()
+					rawhtml = mybytes.decode("utf8")
+					fp.close()
+					rawhtml=rawhtml[:8192]
+					soup = BeautifulSoup(rawhtml, 'html.parser')
+					title = soup.find('title')
+					print(colored(title.string.lstrip().rstrip(), 'cyan', attrs=['bold'])) # Prints the tag string content
+					#print(title.string.lstrip().rstrip()) # Prints the tag string content
+
+				print(colored(j, 'blue')) 
+				print('________')
+			except Exception:
+				pass
+	
 	except Exception as x:
 		print(x)
 
