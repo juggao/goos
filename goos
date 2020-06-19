@@ -73,14 +73,17 @@ def main():
 	tpes=""
 	url=0
 	dlimit=""
+ 
 	if argc == 1:
-		print("goos \"Some Name\" <maxresults> <lang> <tld> <flag=udmh>")
+		print("goos \"Some Name\" <maxresults, 0=None> <lang> <tld> <flag=udmh>")
 		return
 	else:
 		query = sys.argv[1]
 	maxresults=10
 	if argc >= 3:
-	    maxresults = int(sys.argv[2])
+		maxresults = int(sys.argv[2])
+		if maxresults==0:
+			maxresults=None
 	if argc >= 4:
 	    langs = sys.argv[3]
 	if argc >= 5:
