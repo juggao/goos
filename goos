@@ -75,19 +75,19 @@ def main():
 	dlimit=""
  
 	if argc == 1:
-		print("goos \"Some Name\" <maxresults, 0=None> <lang> <tld> <flag=udmh>")
+		print("goos \"Some Name\" <lang> <maxresults, 0=None> <tld> <flag=udmh>")
 		return
 	else:
 		query = sys.argv[1]
 	maxresults=10
 	if argc >= 3:
-		maxresults = int(sys.argv[2])
-		if maxresults==0:
-			maxresults=None
+                langs = sys.argv[2]
 	if argc >= 4:
-	    langs = sys.argv[3]
+                maxresults = int(sys.argv[3])
+                if maxresults==0:
+                        maxresults=None
 	if argc >= 5:
-	    tld = sys.argv[4]
+                tld = sys.argv[4]
 	if argc >= 6:
 		if 'u' in sys.argv[5]:
 			url = 1		
@@ -99,12 +99,12 @@ def main():
 			dlimit='qdr:h'
 
 	print("searching:", query) 
-	print("lang:", langs,
-	      "tbs: ", dlimit, 
-	      "max:", maxresults,
-	      "tld:", tld,
-	      "tpe:", tpes, 
-	      "url only:", url, "\n")
+#	print("lang:", langs,
+#	      "tbs: ", dlimit, 
+#	      "max:", maxresults,
+#	      "tld:", tld,
+#	      "tpe:", tpes, 
+#	      "url only:", url, "\n")
  
 	try:
 		for j in search(query, tld, lang=langs,tbs=dlimit, num=10,start=0,stop=maxresults, pause=2): 
@@ -117,10 +117,10 @@ def main():
 					rawhtml=rawhtml[:8192]
 					soup = BeautifulSoup(rawhtml, 'html.parser')
 					title = soup.find('title')
-					print(colored(title.string.lstrip().rstrip(), 'cyan', attrs=['bold'])) # Prints the tag string content
+					print(colored(title.string.lstrip().rstrip(), 'light_green', attrs=['bold'])) # Prints the tag string content
 					#print(title.string.lstrip().rstrip()) # Prints the tag string content
 
-				print(colored(j, 'blue')) 
+				print(colored(j, 'light_blue')) 
 				print('________')
 			except Exception:
 				pass
